@@ -1,0 +1,23 @@
+# ============================================================
+# RawrKô — Blueprint de deploy no Render.com 🦕
+# Cria os dois serviços automaticamente com a configuração certa:
+#   New + → Blueprint → selecione este repositório → Apply
+# ============================================================
+
+services:
+  # Backend: API REST de tarefas (Node.js)
+  - type: web
+    name: rawrko-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    healthCheckPath: /health
+
+  # Frontend: PWA estático
+  - type: web
+    name: rawrko-pwa
+    runtime: static
+    rootDir: frontend
+    staticPublishPath: .
