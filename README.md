@@ -64,8 +64,8 @@ python3 -m http.server 8080
 
 | Serviço | Tipo Render | Link |
 |---|---|---|
-| Frontend (PWA) | Static Site | `https://rawrko-pwa.onrender.com` |
-| Backend (API REST) | Web Service (Node) | `https://rawrko-api.onrender.com` |
+| Frontend (PWA) | Static Site | `https://rawrko-pwa-x9h2.onrender.com` |
+| Backend (API REST) | Web Service (Node) | `https://rawrko-api-x9h2.onrender.com` |
 
 O frontend sincroniza as tarefas com a API REST. Sem internet (ou com a
 API do plano gratuito "dormindo"), o app segue funcionando em modo offline
