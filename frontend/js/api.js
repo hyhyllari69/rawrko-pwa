@@ -7,7 +7,7 @@
 
 /* ⚙️ URL do backend publicado no Render (Web Service).
    Troque aqui se o endereço da sua API for diferente. */
-const RAWRKO_API_URL = 'https://rawrko-api.onrender.com';
+const RAWRKO_API_URL = 'https://rawrko-api-x9h2.onrender.com';
 
 const REQUEST_TIMEOUT = 8000; // ms
 

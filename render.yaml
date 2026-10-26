@@ -7,7 +7,7 @@
 services:
   # Backend: API REST de tarefas (Node.js)
   - type: web
-    name: rawrko-api
+    name: rawrko-api-x9h2
     runtime: node
     rootDir: backend
     buildCommand: npm install
@@ -17,7 +17,7 @@ services:
 
   # Frontend: PWA estático
   - type: web
-    name: rawrko-pwa
+    name: rawrko-pwa-x9h2
     runtime: static
     rootDir: frontend
     staticPublishPath: .
