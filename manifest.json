@@ -1,0 +1,42 @@
+{
+  "name": "RawrKô — Suas tarefas na era dos dinos",
+  "short_name": "RawrKô",
+  "description": "Lista de tarefas fofa com dinossauros. Organize-se sem virar fóssil!",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FDF8F0",
+  "theme_color": "#7FC8A9",
+  "categories": ["productivity", "lifestyle"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nova tarefa",
+      "short_name": "Nova",
+      "description": "Adicionar uma nova tarefa",
+      "url": "./index.html"
+    }
+  ]
+}

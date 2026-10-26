@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>RawrKô — Suas tarefas na era dos dinos 🦕</title>
+  <meta name="description" content="RawrKô: lista de tarefas fofa com dinossauros. Organize-se sem virar fóssil!" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#7FC8A9" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="RawrKô" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- Cabeçalho com mascote -->
+    <header class="header">
+      <div class="header-top">
+        <h1 class="logo">Rawr<span>Kô</span> <span class="rawr-emoji">🦕</span></h1>
+        <button id="btnInstall" class="btn-install hidden" type="button" title="Instalar aplicativo">
+          ⬇️ Instalar app
+        </button>
+      </div>
+      <p class="slogan">Suas tarefas na era dos dinos</p>
+
+      <!-- Mascote dinossauro -->
+      <div class="mascote-wrap" aria-live="polite">
+        <svg id="dinoMascot" class="dino" viewBox="0 0 200 160" role="img" aria-label="Mascote dinossauro fofo">
+          <!-- sombra -->
+          <ellipse class="dino-shadow" cx="95" cy="148" rx="55" ry="9" fill="rgba(0,0,0,.10)"/>
+          <!-- cauda -->
+          <path class="dino-body" d="M120 95 Q175 85 178 45 Q180 30 168 32 Q160 34 160 48 Q158 75 112 82 Z"/>
+          <!-- corpo -->
+          <ellipse class="dino-body" cx="88" cy="98" rx="58" ry="50"/>
+          <!-- barriga -->
+          <ellipse class="dino-belly" cx="88" cy="112" rx="38" ry="30"/>
+          <!-- espinhos -->
+          <path class="dino-spike" d="M40 62 Q34 46 46 40 Q50 54 58 56 Z"/>
+          <path class="dino-spike" d="M60 48 Q56 30 70 27 Q72 42 80 46 Z"/>
+          <!-- braquinhos -->
+          <path class="dino-body" d="M128 96 q16 -2 18 10 q1 8 -8 7 q-14 -1 -16 -9 Z"/>
+          <!-- patas -->
+          <ellipse class="dino-foot" cx="68" cy="140" rx="20" ry="10"/>
+          <ellipse class="dino-foot" cx="108" cy="140" rx="20" ry="10"/>
+          <!-- olhos -->
+          <g class="dino-eyes">
+            <circle class="dino-eye" cx="72" cy="82" r="11" fill="#fff"/>
+            <circle class="dino-eye" cx="106" cy="82" r="11" fill="#fff"/>
+            <circle class="dino-pupil" cx="74" cy="84" r="5"/>
+            <circle class="dino-pupil" cx="108" cy="84" r="5"/>
+            <circle cx="76" cy="81" r="2" fill="#fff"/>
+            <circle cx="110" cy="81" r="2" fill="#fff"/>
+          </g>
+          <!-- bochechas -->
+          <ellipse class="dino-blush" cx="58" cy="100" rx="9" ry="6"/>
+          <ellipse class="dino-blush" cx="122" cy="100" rx="9" ry="6"/>
+          <!-- boquinha -->
+          <path class="dino-mouth" d="M80 104 Q94 116 108 104" fill="none" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+        <p id="dinoSay" class="dino-say">Eee! Quantas coisas pra fazer? 🥚</p>
+      </div>
+    </header>
+
+    <!-- Progresso -->
+    <section class="progress-card" aria-label="Progresso do dia">
+      <div class="progress-info">
+        <span id="progressLabel">0 de 0 feitas</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div id="progressBar" class="progress-bar" style="width:0%"></div>
+      </div>
+    </section>
+
+    <!-- Formulário nova tarefa -->
+    <form id="formTask" class="form-card" autocomplete="off">
+      <div class="input-row">
+        <input id="inputTask" type="text" maxlength="120" placeholder="O que vamos fazer hoje?" required />
+        <button type="submit" class="btn-add" aria-label="Adicionar tarefa">Rawr! ➕</button>
+      </div>
+      <div class="input-row options">
+        <select id="selectCat" aria-label="Categoria">
+          <option value="estudo">🦕 Estudo</option>
+          <option value="casa">🥚 Casa</option>
+          <option value="lazer">🍃 Lazer</option>
+          <option value="importante">⭐ Importante</option>
+        </select>
+        <select id="selectPrio" aria-label="Prioridade">
+          <option value="baixa">🟢 Baixa</option>
+          <option value="media" selected>🟡 Média</option>
+          <option value="alta">🔴 Alta</option>
+        </select>
+        <input id="inputDate" type="date" aria-label="Prazo (opcional)" />
+      </div>
+    </form>
+
+    <!-- Ferramentas: busca + filtros -->
+    <section class="toolbar">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input id="inputSearch" type="search" placeholder="Buscar tarefa..." aria-label="Buscar tarefa" />
+      </div>
+      <div class="filters" role="tablist" aria-label="Filtros">
+        <button type="button" class="chip active" data-filter="all">Todas</button>
+        <button type="button" class="chip" data-filter="pend">Pendentes</button>
+        <button type="button" class="chip" data-filter="done">Feitas</button>
+      </div>
+      <div class="filters" id="catFilters" aria-label="Filtrar por categoria">
+        <button type="button" class="chip cat active" data-cat="all">🐾 Tudo</button>
+        <button type="button" class="chip cat" data-cat="estudo">🦕</button>
+        <button type="button" class="chip cat" data-cat="casa">🥚</button>
+        <button type="button" class="chip cat" data-cat="lazer">🍃</button>
+        <button type="button" class="chip cat" data-cat="importante">⭐</button>
+      </div>
+      <div class="sort-row">
+        <label for="selectSort">Ordenar:</label>
+        <select id="selectSort" aria-label="Ordenar tarefas">
+          <option value="created">Ordem de criação</option>
+          <option value="prio">Prioridade</option>
+          <option value="date">Prazo</option>
+        </select>
+        <button id="btnClearDone" type="button" class="btn-ghost">🧹 Limpar feitas</button>
+      </div>
+    </section>
+
+    <!-- Lista -->
+    <main>
+      <ul id="taskList" class="task-list"></ul>
+      <p id="emptyState" class="empty hidden"></p>
+    </main>
+
+    <footer class="footer">
+      <p>Feito com 💚 por dinos fofos · RawrKô PWA</p>
+    </footer>
+  </div>
+
+  <!-- Toast + Desfazer -->
+  <div id="toast" class="toast" role="status"></div>
+  <button id="btnUndo" class="btn-undo hidden" type="button">↩️ Desfazer</button>
+  <!-- Confete -->
+  <div id="confetti" class="confetti" aria-hidden="true"></div>
+
+  <script src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.register('js/sw.js').catch(() => {}));
+    }
+  </script>
+</body>
+</html>
