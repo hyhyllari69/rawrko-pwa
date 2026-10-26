@@ -32,6 +32,14 @@ function writeTasks(tasks) {
 }
 
 /* ---------- Rotas ---------- */
+app.get('/', (_req, res) => {
+  res.json({
+    name: 'RawrKô API 🦕',
+    message: 'Suas tarefas na era dos dinos! Esta é a API — o app está no frontend.',
+    endpoints: ['GET /health', 'GET /tasks', 'POST /tasks', 'PUT /tasks/:id', 'DELETE /tasks/:id'],
+  });
+});
+
 app.get('/health', (_req, res) => {
   res.json({ ok: true, name: 'RawrKô API', rawr: '🦕' });
 });
