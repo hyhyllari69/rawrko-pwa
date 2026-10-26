@@ -127,6 +127,11 @@ function addTask(text, cat, prio, date) {
   save();
   render();
   toast('Rawr! Tarefa salva! 🦕');
+
+  // Sincroniza com o backend (best-effort; offline não quebra nada)
+  RawrAPI.createTask(tasks[0]).then((r) => {
+    if (!r) toast('Salva no dino local — sync depois 📡', 3000);
+  });
 }
 
 function toggleTask(id) {
@@ -135,6 +140,7 @@ function toggleTask(id) {
   t.done = !t.done;
   save();
   render();
+  RawrAPI.updateTask(t);
   if (t.done) {
     const done = tasks.filter((x) => x.done).length;
     if (done === tasks.length) {
@@ -153,6 +159,7 @@ function deleteTask(id) {
   tasks.splice(index, 1);
   save();
   render();
+  RawrAPI.deleteTask(id);
   toast('Ops! Tarefa virou fóssil 🦴');
   btnUndo.classList.remove('hidden');
   clearTimeout(undoTimer);
@@ -162,6 +169,9 @@ function deleteTask(id) {
 function undoDelete() {
   if (!lastDeleted) return;
   tasks.splice(lastDeleted.index, 0, lastDeleted.task);
+  save();
+  render();
+  RawrAPI.createTask(lastDeleted.task);
   lastDeleted = null;
   save();
   render();
@@ -177,6 +187,7 @@ function editTask(id, newText) {
   if (text) {
     t.text = text;
     save();
+    RawrAPI.updateTask(t);
     toast('Rawr! Tarefa atualizada ✏️');
   }
   render();
@@ -392,3 +403,14 @@ window.addEventListener('appinstalled', () => {
 
 /* ---------- Start ---------- */
 render();
+
+/* Sincronização inicial: o servidor é a fonte da verdade quando acessível.
+   Se estiver offline (ou a API dormindo), segue com o localStorage. */
+(async () => {
+  const remote = await RawrAPI.getTasks();
+  if (Array.isArray(remote)) {
+    tasks = remote;
+    save();
+    render();
+  }
+})();

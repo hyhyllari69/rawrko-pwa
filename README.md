@@ -34,12 +34,24 @@ sem build, 100% offline.
 
 ## 🚀 Como rodar localmente
 
-O service worker exige HTTPS ou `localhost`. Na pasta do projeto:
+**Backend** (opcional — sem ele o app funciona em modo offline):
 
 ```bash
+cd backend
+npm install
+npm start          # API em http://localhost:3000
+```
+
+**Frontend** (service worker exige localhost ou HTTPS):
+
+```bash
+cd frontend
 python3 -m http.server 8080
 # abra http://localhost:8080
 ```
+
+> Para usar a API local, troque a URL em `frontend/js/api.js`
+> para `http://localhost:3000`.
 
 ## 📲 Como instalar no celular
 
@@ -50,21 +62,33 @@ python3 -m http.server 8080
 
 ## 🌍 Publicação
 
-- **Código-fonte**: [GitHub](https://github.com/SEU-USUARIO/rawrko-pwa)
-- **App publicado**: [Render.com](https://rawrko.onrender.com)
-  (site estático, sem build)
+| Serviço | Tipo Render | Link |
+|---|---|---|
+| Frontend (PWA) | Static Site | `https://rawrko-pwa.onrender.com` |
+| Backend (API REST) | Web Service (Node) | `https://rawrko-api.onrender.com` |
+
+O frontend sincroniza as tarefas com a API REST. Sem internet (ou com a
+API do plano gratuito "dormindo"), o app segue funcionando em modo offline
+com o `localStorage` — e sincroniza quando a conexão volta. 📡
+
+> ⚙️ A URL da API fica configurada em `frontend/js/api.js`.
 
 ## 📁 Estrutura
 
 ```
 rawrko-pwa/
-├── index.html          # página única do app
-├── css/style.css       # tema fofo pastel, mobile first
-├── js/app.js           # lógica das tarefas
-├── js/sw.js            # service worker (offline)
-├── manifest.json       # configuração do PWA
-├── icons/              # ícones 192/512 + maskable
-└── icons/make_icons.py # gerador dos ícones (PIL)
+├── frontend/               # PWA — Static Site no Render
+│   ├── index.html          # página única do app
+│   ├── css/style.css       # tema fofo pastel, mobile first
+│   ├── js/api.js           # cliente da API REST (fetch + fallback)
+│   ├── js/app.js           # lógica das tarefas
+│   ├── js/sw.js            # service worker (offline)
+│   ├── manifest.json       # configuração do PWA
+│   └── icons/              # ícones 192/512 + maskable
+├── backend/                # API REST — Web Service no Render
+│   ├── server.js           # rotas GET/POST/PUT/DELETE /tasks
+│   └── package.json
+└── frontend/icons/make_icons.py  # gerador dos ícones (PIL)
 ```
 
 ---

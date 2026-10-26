@@ -4,11 +4,12 @@
    ============================================================ */
 'use strict';
 
-const CACHE_NAME = 'rawrko-v1';
+const CACHE_NAME = 'rawrko-v2';
 const ASSETS = [
   './',
   './index.html',
   './css/style.css',
+  './js/api.js',
   './js/app.js',
   './manifest.json',
   './icons/icon-192.png',
