@@ -1,7 +1,3 @@
-/* ============================================================
-   RawrKô — Suas tarefas na era dos dinos 🦕
-   Lógica do aplicativo (vanilla JS, sem dependências)
-   ============================================================ */
 'use strict';
 
 /* ---------- Estado ---------- */
@@ -14,6 +10,7 @@ let query = '';
 let sortBy = 'created';
 let lastDeleted = null;    // { task, index }
 let undoTimer = null;
+let theme = localStorage.getItem('rawrko.theme') || 'system';
 
 const CAT_META = {
   estudo:      { emoji: '🦕', label: 'Estudo' },
@@ -69,6 +66,8 @@ const confettiEl  = $('#confetti');
 const dinoEl      = $('#dinoMascot');
 const dinoSayEl   = $('#dinoSay');
 const btnInstall  = $('#btnInstall');
+const btnTheme    = $('#btnTheme');
+const inputImport = $('#inputImport');
 
 /* ---------- Toast ---------- */
 let toastTimer = null;
@@ -84,6 +83,54 @@ function setDino(mood, say) {
   dinoEl.classList.remove('happy', 'party', 'sleep');
   if (mood) dinoEl.classList.add(mood);
   if (say) dinoSayEl.textContent = say;
+}
+
+/* ---------- Tema (claro / escuro / sistema) ---------- */
+function themeIcon() {
+  if (theme === 'system') {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? '🌙' : '☀️';
+  }
+  return theme === 'dark' ? '🌙' : '☀️';
+}
+function applyTheme() {
+  document.documentElement.dataset.theme = theme;
+  btnTheme.textContent = themeIcon();
+}
+function cycleTheme() {
+  const order = ['system', 'light', 'dark'];
+  theme = order[(order.indexOf(theme) + 1) % order.length];
+  localStorage.setItem('rawrko.theme', theme);
+  applyTheme();
+  toast('Tema: ' + (theme === 'system' ? 'Sistema' : theme === 'dark' ? 'Escuro' : 'Claro'));
+}
+
+/* ---------- Exportar / Importar ---------- */
+function exportTasks() {
+  const blob = new Blob([JSON.stringify(tasks, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'rawrko-tarefas.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Tarefas exportadas! 📤');
+}
+
+function importTasks(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!Array.isArray(data)) throw new Error('Formato inválido');
+      tasks = data;
+      save();
+      render();
+      toast(`${tasks.length} tarefas importadas! 📥`);
+    } catch {
+      toast('Erro ao importar arquivo 🚫');
+    }
+  };
+  reader.readAsText(file);
 }
 
 function dinoMoodByProgress(done, total) {
@@ -121,7 +168,7 @@ function addTask(text, cat, prio, date) {
     done: false,
     cat,
     prio,
-    date,                    // '' se não tiver prazo
+    date,
     created: Date.now(),
   });
   save();
@@ -399,6 +446,33 @@ btnInstall.addEventListener('click', async () => {
 window.addEventListener('appinstalled', () => {
   btnInstall.classList.add('hidden');
   toast('RawrKô instalado! 📱🦕');
+});
+
+/* ---------- Tema ---------- */
+applyTheme();
+btnTheme.addEventListener('click', cycleTheme);
+
+inputImport.addEventListener('change', (e) => {
+  if (e.target.files.length) importTasks(e.target.files[0]);
+  e.target.value = '';
+});
+
+/* ---------- Atalhos de teclado ---------- */
+window.addEventListener('keydown', (e) => {
+  if (e.target.matches('input, select, textarea')) return;
+  const key = e.key.toLowerCase();
+  if (key === 'n') {
+    inputTask.focus();
+    e.preventDefault();
+  } else if (key === 'e') {
+    exportTasks();
+    e.preventDefault();
+  } else if (key === 'i') {
+    inputImport.click();
+    e.preventDefault();
+  } else if (key === '?') {
+    toast('Atalhos: N nova · E exportar · I importar · Esc cancela edição', 4000);
+  }
 });
 
 /* ---------- Start ---------- */
