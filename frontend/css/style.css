@@ -1,3 +1,4 @@
+•/css/style.css
 /* ============================================================
    RawrKô — Suas tarefas na era dos dinos 🦕
    Mobile First · tema fofo pastel · v2 polido
@@ -25,7 +26,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
     --mint: #6FBC9B;
     --mint-dark: #93DCB9;
     --mint-light: #35594A;
@@ -43,6 +44,25 @@
     --shadow: 0 4px 14px rgba(0, 0, 0, .4);
     --shadow-lg: 0 10px 30px rgba(0, 0, 0, .5);
   }
+}
+
+[data-theme="dark"] {
+  --mint: #6FBC9B;
+  --mint-dark: #93DCB9;
+  --mint-light: #35594A;
+  --mint-pale: #233832;
+  --pink: #5C3A47;
+  --pink-strong: #F58FB0;
+  --butter: #4E4632;
+  --lilac: #4A3D63;
+  --lilac-dark: #C9B6E4;
+  --cocoa: #F0E6E0;
+  --cocoa-light: #A99696;
+  --bg: #191420;
+  --card: #262031;
+  --danger: #F07C7C;
+  --shadow: 0 4px 14px rgba(0, 0, 0, .4);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, .5);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -138,6 +158,22 @@ body {
   transition: transform .15s;
 }
 .btn-install:active { transform: scale(.94); }
+
+.btn-theme {
+  border: none;
+  background: var(--bg);
+  color: var(--cocoa);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: .9rem;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 2px solid var(--mint-light);
+  cursor: pointer;
+  transition: transform .15s, background .2s, color .2s;
+}
+.btn-theme:hover { background: var(--mint-light); }
+.btn-theme:active { transform: scale(.94); }
 
 .slogan {
   color: var(--cocoa-light);
